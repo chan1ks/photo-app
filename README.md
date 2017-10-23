@@ -4,7 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm run mock` and in another terminal, `npm run server' for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+NOTE: to receive any data, a mongo needs to be running. Create databases photos, albums, and users in a mongo terminal. (This will need to be updated to support auto-creating the databases on POST).
 
 ## Code scaffolding
 

@@ -6,6 +6,8 @@ import {SharedModule} from '../../shared/shared.module';
 import {AlbumComponent} from './album.component';
 import {PhotosComponent} from './photos/photos.component';
 import {PhotoDetailsComponent} from './photo-details/photo-details.component';
+import { UploadComponent } from './upload/upload.component';
+import { AlbumDetailsComponent } from './album-details/album-details.component';
 
 @NgModule({
    imports: [
@@ -15,7 +17,9 @@ import {PhotoDetailsComponent} from './photo-details/photo-details.component';
    declarations: [
       AlbumComponent,
       PhotosComponent,
-      PhotoDetailsComponent
+      PhotoDetailsComponent,
+      UploadComponent,
+      AlbumDetailsComponent,
    ]
 })
 export class AlbumModule {

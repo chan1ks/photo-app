@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import {BaseApiService} from '../base-api.service';
 
 export interface User {
   _id: string;
@@ -13,32 +12,23 @@ export interface User {
 }
 
 @Injectable()
-export class UserService extends BaseApiService {
+export class UserService {
 
-  constructor(_http: Http) {
-    super(_http);
-  }
+  baseUrl = '/api';
 
-  getAll(): Observable<any> {
-    return this.get(`${this.baseUrl}/users`)
-       .map(res => res.json());
-  }
-
-  getById(_id: string): Observable<any> {
-    return this.get(`${this.baseUrl}/users/${_id}`)
-       .map(res => res.json());
+  constructor(private _http: Http) {
   }
 
   create(user: User): Observable<any> {
-    return this.post(`${this.baseUrl}/users/register`, user);
+    return this._http.post(`${this.baseUrl}/users/register`, user);
   }
 
   update(user: User): Observable<any> {
-    return this.put(`${this.baseUrl}/users/` + user._id, user);
+    return this._http.put(`${this.baseUrl}/users/${user._id}`, user);
   }
 
   _delete(_id: string): Observable<any> {
-    return this.$delete(`${this.baseUrl}/users/` + _id);
+    return this._http.delete(`${this.baseUrl}/users/${_id}`);
   }
 
 }

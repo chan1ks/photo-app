@@ -1,83 +1,83 @@
 var express = require('express');
 var router = express.Router();
-var mongodb = require('mongodb');
+var userService = require('../services/user.service');
 
-router.get('/users', function (req, res) {
-
-   // Get a Mongo client to work with the Mongo server
-   var mongoClient = mongodb.MongoClient;
-
-   // Define where the MongoDB server is
-   var url = 'mongodb://localhost:27017/users';
-
-   // Connect to the server
-   mongoClient.connect(url, function (err, db) {
-      if (err) {
-         console.log('Unable to connect to the Server', err);
-      } else {
-         // We are connected
-         console.log('Connection established to', url);
-
-         // Get the documents collection
-         var collection = db.collection('photos');
-
-         // Find all photos
-         collection.find({}).toArray(function (err, result) {
-            if (err) {
-               res.send(err);
-            } else if (result.length) {
-               res.render('photos', {
-
-                  // Pass the returned database documents to Jade
-                  "photos": result
-               });
-            } else {
-               res.send('No documents found');
-            }
-            //Close connection
-            db.close();
-         });
-      }
-   });
-});
-
-router.post('/users/authenticate', function (req, res) {
-
-   // Get a Mongo client to work with the Mongo server
-   var mongoClient = mongodb.MongoClient;
-
-   // Define where the MongoDB server is
-   var url = 'mongodb://localhost:27017/users';
-
-   // Connect to the server
-   mongoClient.connect(url, function (err, db) {
-      if (err) {
-         console.log('Unable to connect to the Server', err);
-      } else {
-         // We are connected
-         console.log('Connection established to', url);
-
-         // Get the documents collection
-         var collection = db.collection('photos');
-
-         // Find all photos
-         collection.find({}).toArray(function (err, result) {
-            if (err) {
-               res.send(err);
-            } else if (result.length) {
-               res.render('photos', {
-
-                  // Pass the returned database documents to Jade
-                  "photos": result
-               });
-            } else {
-               res.send('No documents found');
-            }
-            //Close connection
-            db.close();
-         });
-      }
-   });
-});
+router.get('/', getAll);
+router.get('/current', getCurrent);
+router.post('/authenticate', authenticate);
+router.post('/register', register);
+router.put('/:_id', update);
+router.delete('/:_id', _delete);
 
 module.exports = router;
+
+function getAll (req, res) {
+   userService.getAll()
+      .then(function (users) {
+         res.send(users);
+      })
+      .catch(function (err) {
+         res.status(400).send(err);
+      });
+}
+
+function getCurrent (req, res) {
+   userService.getById(req.user.sub)
+      .then(function (user) {
+         if (user) {
+            res.send(user);
+         } else {
+            res.sendStatus(404);
+         }
+      })
+      .catch(function (err) {
+         res.status(400).send(err);
+      });
+}
+
+function authenticate(req, res) {
+   userService.authenticate(req.body.username, req.body.password)
+      .then(function (user) {
+         if (user) {
+            // authentication successful
+            res.send(user);
+         } else {
+            // authentication failed
+            res.status(400).send('Username or password is incorrect');
+         }
+      })
+      .catch(function (err) {
+         res.status(400).send(err);
+      });
+}
+
+function register(req, res) {
+   userService.create(req.body)
+      .then(function () {
+         res.sendStatus(200);
+      })
+      .catch(function (err) {
+         res.status(400).send(err);
+      });
+}
+
+function update(req, res) {
+   userService.update(req.params._id, req.body)
+      .then(function () {
+         res.sendStatus(200);
+      })
+      .catch(function (err) {
+         res.status(400).send(err);
+      });
+}
+
+function _delete(req, res) {
+   userService.delete(req.params._id)
+      .then(function () {
+         res.sendStatus(200);
+      })
+      .catch(function (err) {
+         res.status(400).send(err);
+      });
+}
+

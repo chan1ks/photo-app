@@ -1,0 +1,6 @@
+{
+   "connectionString": "mongodb://localhost:27017",
+   "apiUrl": "http://localhost:9980",
+   "secret": "photoApp",
+   "static": "../../static"
+}

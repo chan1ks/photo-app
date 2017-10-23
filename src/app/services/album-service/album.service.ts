@@ -1,31 +1,46 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
+import {BaseApiService} from '../base-api.service';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+export interface Album {
+   _id: string;
+   name: string;
+   title: string;
+   date: Date;
+   description: string;
+}
+
 @Injectable()
-export class AlbumService {
+export class AlbumService extends BaseApiService {
 
-  constructor(private _http: Http) { }
+   constructor(_http: Http) {
+      super(_http);
+   }
 
-  getPhotos(): Observable<any> {
-    return this._http.get('/api/photos')
-       .map(res => res.json());
-  }
+   getAlbums(): Observable<any> {
+      return this.get('/albums')
+         .map(res => res.json());
+   }
 
-  getPhotoById(id: number): Observable<any> {
-    return this._http.get('/api/photos:id')
-       .map(res => res.json());
-  }
+   getAlbumById(_id: string): Observable<any> {
+      return this.get(`/albums/${_id}`)
+         .map(res => res.json());
+   }
 
-  addPhoto(): Observable<any> {
-    return this._http.get('/api/add-photos')
-       .map(res => res.json());
-  }
+   addAlbum(album: Album): Observable<any> {
+      return this.post('/albums', album)
+         .map(res => res.json());
+   }
 
-  deletePhoto(): Observable<any> {
-    return this._http.get('/api/delete-photos')
-       .map(res => res.json());
-  }
+   update(album: Album): Observable<any> {
+      return this.put(`/albums/${album._id}`, album);
+   }
+
+   _delete(_id: string): Observable<any> {
+      return this.get(`/albums/${_id}`)
+         .map(res => res.json());
+   }
 
 }

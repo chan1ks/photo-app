@@ -1,3 +1,8 @@
-<p>
-  photos works!
-</p>
+<div class="thumbnail">
+   <img src="http://placehold.it/320x150">
+   <div class="caption">
+      <h4><a [routerLink]="['/albums/album-details/photos', image._id]">{{ image.filename }}</a></h4>
+      <p>{{ image.description }}</p>
+      <p>{{ image.uploadDate | date:'shortDate' }}</p>
+   </div>
+</div>

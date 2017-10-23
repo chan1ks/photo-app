@@ -1,15 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {User} from '../../services/user-service/user.service';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+   selector: 'app-navbar',
+   templateUrl: './navbar.component.html',
+   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+   navText: string;
+   currentUser: User;
 
-  ngOnInit() {
-  }
+   constructor() {
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      this.navText = this.currentUser ? 'Logout' : 'Logout';
+   }
+
+   ngOnInit() {
+   }
 
 }
