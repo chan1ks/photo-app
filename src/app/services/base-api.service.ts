@@ -38,8 +38,6 @@ export class BaseApiService {
       return this._http.delete(`${this.baseUrl}${url}`, this.addJwt(options)).catch(this.handleError);
    }
 
-   // private helper methods
-
    private addJwt(options?: Options): Options {
       // ensure request options and headers are not null
       options = options || new RequestOptions();
